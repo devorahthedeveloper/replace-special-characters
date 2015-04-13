@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Replace Special Characters Demo | Devorah</title>
+	<link rel="stylesheet" href="assets/css/demo.css">
+	<link rel="stylesheet" href="assets/css/prism.css">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1" />
+
+</head>
+<body>
+	<div class="wrap">
+		<header class="clear">
+			<h1 class="grid-60 tablet-grid-60 mobile-lg-grid-60 mobile-sm-grid-100">Replace Special Characters</h1>
+			<div class="grid-40 tablet-grid-40 mobile-lg-grid-40 mobile-sm-grid-100 download">
+				
+				 <a class="primary" href="https://github.com/devorahthedeveloper/replace-special-characters/archive/gh-pages.zip">Download the zip</a>
+				 <a class="secondary" href="https://github.com/devorahthedeveloper/replace-special-characters/">View on Github</a>				
+			</div>
+		</header>
+		<img class="thumb" src="assets/img/thumb-replace-characters.png" width="220" alt="">
+		<p>This is a lightweight script that enables you to identify and replace special characters within a form submission.</p>
+
+		<p> For example, <strong><span class="bad">Ü</span>ber­gr<span class="bad">ö­ß</span>e</strong> becomes <strong><span class="good">Ue</span>ber­gr<span class="good">oe­ss</span>e</strong>.</p>
+		<p>The script comes with a <a href="#default-mapping">default character mapping</a>. However you can provide your own mapping. See <a href="#all-options">options</a>.</p>
+		<div class="clear"></div>
+		<h2>Demo</h2>
+		<p>Note how the accented characters in the form below (<strong class="bad">à</strong>, <strong class="bad">ÿ</strong>) are replaced with <strong class="good">a</strong> and <strong class="good">y</strong> respectively: </p>
+		<div class="clear" id="demo">
+			<div class="grid-40 tablet-grid-40 mobile-grid-100">
+				<h3>Original values:</h3>
+				<form action="" method="">
+					<div class="form-group">
+						<label for="firstName">First Name</label>
+						<input type="text" name="firstName" id="firstName" placeholder="first name" value="àwesome">
+					</div>
+					<div class="form-group">
+						<label for="lastName">Last Name</label>
+						<input type="text" name="lastName" id="lastName" placeholder="last name" value="ÿes">
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="email" name="email" id="email" placeholder="email address" value="test@tasty.com">
+					</div>
+					<div class="form-group">
+						<label for="color">Zip Code</label>
+						<input type="text" name="zip" id="zip" placeholder="zip code" value="123456">
+					</div>
+				</form>
+			</div>
+			<div class="grid-55 prefix-5 tablet-grid-55 tablet-prefix-5 mobile-grid-100">
+				<h3>Replaced values:</h3>
+				<div class="result-wrap">
+					<div class="result"></div>
+				</div>
+				<div><strong>View results as:</strong> <br><input type="radio" name="returnFormat" value="json" checked>JSON <input type="radio" name="returnFormat" value="object">Object <input type="radio" name="returnFormat" value="param">Param string<input type="radio" name="returnFormat" value="array">Array</div>
+			</div>
+
+		</div>
+		<h2 id="usage">Basic usage</h2>
+		<pre class="language-javascript"><code>replaceSpecialCharacters(originalData);</code></pre> </p>
+		<p><code class="language-javascript">originalData</code> must be a form element, whether a native DOM or jQuery element.</p>
+		<p> To clean form values prior to submit, call within a submit handler:</p>
+		<p>
+		<pre class="language-javascript"><code>$('form').on('submit', function(){
+	replaceSpecialCharacters(this);
+	// do something else
+});</code></pre></p>
+
+<p>To provide your own character mapping, pass the optional configuration object as the second parameter and specify your preferred mapping:
+	<pre class="language-javascript"><code>$('form').on('submit', function(){
+	replaceSpecialCharacters(this, {
+		characterMap: {
+			'a': 'ai',
+			'b': 'bee',
+			'c': 'cee'
+		}
+	});
+});</code></pre></p>
+
+<p>To change the default return format, set the desired format in the configuration object. Accepted values are: "array", "json", "object" and "param":
+	<pre class="language-javascript"><code>$('form').on('submit', function(){
+	replaceSpecialCharacters(this, {
+		format: "param"
+	});
+});
+// returns key=value&amp;key=value</code></pre></p>
+<h2 id="all-options">All available options</h2>
+
+<table>
+	<tr>
+		<th>Property</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>	
+		<td class="code">originalData</td>
+		<td>none</td>
+		<td>The form with values to replace. Must be a native DOM or jQuery form element. <br> <span class="required">required</span></td>
+	</tr>
+	<tr>	
+		<td class="code">format</td>
+		<td>"json"</td>
+		<td>The return format. Possible values are: "json", "object", "array", or "param". <br> <span class="optional">optional</span></td>
+	</tr>
+	<tr>
+		<td class="code">characterMap</td>
+		<td id="default-mapping"><pre>{
+   'à': 'a',
+   'â': 'a',
+   'ä': 'ae',
+   'æ': 'ae',
+   'ç': 'c',
+   'é': 'e',
+   'è': 'e',
+   'ê': 'e',
+   'ë': 'e',
+   'î': 'i',
+   'ï': 'i',
+   'ô': 'o',
+   'ö': 'oe',
+   'œ': 'oe',
+   'ù': 'u',
+   'û': 'u',
+   'ü': 'ue',
+   'ß': 'ss',
+   'ÿ': 'y'
+}</pre>
+		</td>
+		<td>The character mapping. Pass in an object of key/value pairs to specify characters to replace. <br> <span class="optional">optional</span> </td>
+	</tr>
+</table>
+<h2>Dependencies</h2>
+<p>Requires jQuery 1.6 or higher</p>
+<h2 id="notes">Notes </h2>
+
+		<p>The script is sensitive to capitalization and location of the special characters within the original word. </p>
+		<p><strong>Examples:</strong></p>
+		<p>Beginning of word:</p>
+		<ul>
+			<li>
+				<strong class="bad">Ü</strong>aaa => 
+				<strong class="good">Ue</strong>aaa
+			</li>
+			<li>
+				<strong class="bad">Ô</strong>aaa  => 
+				<strong class="good">O</strong>aaa
+			</li>
+			<li>
+				<strong class="bad">ô</strong>aaa  => 
+				<strong class="good">o</strong>aaa
+			</li>
+			<li><strong class="bad">Ü</strong>AAA => <strong class="good">UE</strong>AAA</li>
+			<li>
+				<strong class="bad">Ü</strong>aaa <strong class="bad">Œ</strong>aaa => 
+				<strong class="good">Ue</strong>aaa <strong class="good">Oe</strong>aaa
+			</li>
+			<li>
+				<strong class="bad">Ü</strong>AAA <strong class="bad">Œ</strong>aaa => 
+				<strong class="good">UE</strong>AAA <strong class="good">Oe</strong>aaa
+			</li>
+		</ul>
+		<p>Mid-word</p>
+		<ul>
+
+			<li>
+				aa<strong class="bad">ô</strong>aa  => 
+				aa<strong class="good">o</strong>aa
+			</li>
+			<li>
+				AA<strong class="bad">Ü</strong>AA  => 
+				AA<strong class="good">UE</strong>AA
+			</li>
+			<li>
+				AA<strong class="bad">Ô</strong>AA  => 
+				AA<strong class="good">O</strong>AA
+			</li>
+		</ul>
+		<p>End of word</p>
+		<ul>
+			<li>
+				aaaa<strong class="bad">ô</strong>  => 
+				aaaa<strong class="good">o</strong>
+			</li>
+			<li>
+				aaaa<strong class="bad">ü</strong>  => 
+				aaaa<strong class="good">ue</strong>
+			</li>
+			<li>
+				AAAA<strong class="bad">Ü</strong>  => 
+				AAAA<strong class="good">UE</strong>
+			</li>
+			<li>
+				Aaaa<strong class="bad">ü</strong>  => 
+				Aaaa<strong class="good">ue</strong>
+			</li>
+		</ul>
+
+		<h2>Future enhancements</h2>
+		<ul>
+			<li>Add ability to provide a json object or array for <code class="language-javascript">originalData</code></li>
+			<li>Add ability to specify return format of "form".</li>
+		</ul>
+		<h2>Download</h2>
+		<div class="clear">
+			<p class="download"><a class="primary" href="https://github.com/devorahthedeveloper/replace-special-characters/archive/gh-pages.zip">Download the zip</a> <a href="https://github.com/devorahthedeveloper/replace-special-characters/">View project on Github</a>	</p>
+		</div>
+		<div class="branding">Brought to you by <a href="http://devorahthedeveloper.github.io">Devorah</a> <span class="copyright">&copy; 2015</span> </div>
+	</div>
+
+	<script src="assets/script/lib/jquery.min.js"></script>
+	<script src="assets/script/lib/prism.js"></script>
+	<script src="assets/script/lib/replace-special-characters.js"></script>
+	<script src="assets/script/demo.js"></script>
+ 
+	</script>
+</body>
+</html>
